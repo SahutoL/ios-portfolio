@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: "公開中のiOSアプリ一覧",
 };
 
-// ISRで週次更新
-export const revalidate = getSiteConfig().revalidateSeconds;
+// ISRで週次更新（604800秒 = 1週間）
+export const revalidate = 604800;
 
 function StarRating({ rating }: { rating?: number }) {
   if (!rating) return null;

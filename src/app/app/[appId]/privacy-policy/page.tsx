@@ -11,8 +11,8 @@ export async function generateStaticParams() {
   const appIds = getAllAppIds();
   return appIds.map((appId) => ({ appId }));
 }
-
-export const revalidate = getSiteConfig().revalidateSeconds;
+// ISRで週次更新（604800秒 = 1週間）
+export const revalidate = 604800;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { appId } = await params;

@@ -23,8 +23,8 @@ export async function generateStaticParams() {
   return appIds.map((appId) => ({ appId }));
 }
 
-// ISRで週次更新
-export const revalidate = getSiteConfig().revalidateSeconds;
+// ISRで週次更新（604800秒 = 1週間）
+export const revalidate = 604800;
 
 // 動的メタデータ
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
