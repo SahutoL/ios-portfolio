@@ -83,7 +83,12 @@ export default async function AppDetailPage({ params }: Props) {
           />
           <div className="app-detail-info">
             <h1 className="app-detail-title">{app.trackName}</h1>
-            <p className="app-detail-developer">{app.artistName}</p>
+            <a href="https://apps.apple.com/jp/developer/renzo-ohhama/id1812551739" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="app-detail-developer">
+                {app.artistName}
+            </a>
             <p style={{ color: "var(--color-text-secondary)" }}>
               {app.primaryGenreName}
             </p>
