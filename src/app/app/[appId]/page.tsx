@@ -118,6 +118,35 @@ export default async function AppDetailPage({ params }: Props) {
   return (
     <div className="container">
       <div className="app-detail">
+        {/* JSON-LD 構造化データ */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: app.trackName,
+              operatingSystem: "iOS",
+              applicationCategory: app.primaryGenreName,
+              offers: {
+                "@type": "Offer",
+                price: app.price,
+                priceCurrency: app.currency,
+              },
+              ...(app.averageUserRating && {
+                aggregateRating: {
+                  "@type": "AggregateRating",
+                  ratingValue: app.averageUserRating,
+                  ratingCount: app.userRatingCount ?? 0,
+                  bestRating: 5,
+                  worstRating: 1,
+                },
+              }),
+              image: app.artworkUrl512,
+              url: app.trackViewUrl,
+            }),
+          }}
+        />
         {/* Header Section */}
         <header className="app-detail-header">
           <Image

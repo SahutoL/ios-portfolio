@@ -51,3 +51,24 @@ export function getContentRaw(appId: string, type: 'privacy-policy' | 'terms'): 
 export function hasContent(appId: string): boolean {
   return fs.existsSync(path.join(CONTENT_DIR, appId));
 }
+
+/**
+ * Markdownファイルの最終更新日を取得
+ * @param appId アプリID
+ * @param type 'privacy-policy' | 'terms'
+ * @returns 日付文字列 (yyyy年M月d日)。ファイルが存在しない場合はnull
+ */
+export function getContentModifiedDate(appId: string, type: 'privacy-policy' | 'terms'): string | null {
+  const filePath = path.join(CONTENT_DIR, appId, `${type}.md`);
+  
+  try {
+    const stat = fs.statSync(filePath);
+    return stat.mtime.toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  } catch {
+    return null;
+  }
+}

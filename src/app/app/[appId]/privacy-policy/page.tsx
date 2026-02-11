@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAppInfo, getAllAppIds, getAppName, isRegisteredApp } from "@/lib/itunes";
-import { getContentHtml } from "@/lib/content";
+import { getContentHtml, getContentModifiedDate } from "@/lib/content";
 
 type Props = {
   params: Promise<{ appId: string }>;
@@ -47,6 +47,7 @@ export default async function PrivacyPolicyPage({ params }: Props) {
   }
   
   const returnId = app?.trackId ?? appId;
+  const updatedDate = getContentModifiedDate(appId, 'privacy-policy');
   
   return (
     <div className="container">
@@ -66,10 +67,19 @@ export default async function PrivacyPolicyPage({ params }: Props) {
         <h1>プライバシーポリシー</h1>
         <p style={{ 
           color: "var(--color-text-secondary)", 
-          marginBottom: "var(--space-8)" 
+          marginBottom: "var(--space-2)" 
         }}>
           {appName}
         </p>
+        {updatedDate && (
+          <p style={{ 
+            fontSize: "var(--text-xs)", 
+            color: "var(--color-text-tertiary)",
+            marginBottom: "var(--space-8)" 
+          }}>
+            最終更新日: {updatedDate}
+          </p>
+        )}
         
         <div 
           className="legal-content"
