@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { getAllApps, formatRating, getSiteConfig } from "@/lib/itunes";
+import { StarRating } from "@/components/StarRating";
 
 export const metadata: Metadata = {
   title: "アプリ一覧",
@@ -10,20 +11,6 @@ export const metadata: Metadata = {
 
 // ISRで週次更新（604800秒 = 1週間）
 export const revalidate = 604800;
-
-function StarRating({ rating }: { rating?: number }) {
-  if (!rating) return null;
-  
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating - fullStars >= 0.5;
-  
-  return (
-    <span className="stars" aria-label={`${rating}点`}>
-      {"★".repeat(fullStars)}
-      {hasHalfStar && "☆"}
-    </span>
-  );
-}
 
 export default async function AppsPage() {
   const apps = await getAllApps();

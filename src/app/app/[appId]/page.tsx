@@ -10,8 +10,8 @@ import {
   formatDate,
   formatLanguages,
   formatPrice,
-  getSiteConfig 
 } from "@/lib/itunes";
+import { StarRating } from "@/components/StarRating";
 
 type Props = {
   params: Promise<{ appId: string }>;
@@ -44,20 +44,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [app.artworkUrl512],
     },
   };
-}
-
-function StarRating({ rating }: { rating?: number }) {
-  if (!rating) return <span>—</span>;
-  
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating - fullStars >= 0.5;
-  
-  return (
-    <span className="stars" aria-label={`${rating}点`}>
-      {"★".repeat(fullStars)}
-      {hasHalfStar && "☆"}
-    </span>
-  );
 }
 
 export default async function AppDetailPage({ params }: Props) {

@@ -1,7 +1,8 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAppInfo, getAllAppIds, getSiteConfig } from "@/lib/itunes";
+import { getAppInfo, getAllAppIds, getAppLegalInfo } from "@/lib/itunes";
+import { processMarkdown } from "@/lib/markdown";
 
 type Props = {
   params: Promise<{ appId: string }>;
@@ -17,51 +18,46 @@ export const revalidate = 604800;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { appId } = await params;
   const app = await getAppInfo(appId);
+  const legal = getAppLegalInfo(appId);
+  const appName = app?.trackName ?? legal?.appName;
   
-  if (!app) {
+  if (!appName) {
     return { title: "利用規約" };
   }
   
   return {
-    title: `利用規約 - ${app.trackName}`,
-    description: `${app.trackName}の利用規約`,
+    title: `利用規約 - ${appName}`,
+    description: `${appName}の利用規約`,
   };
 }
 
 export default async function TermsPage({ params }: Props) {
   const { appId } = await params;
   const app = await getAppInfo(appId);
+  const legal = getAppLegalInfo(appId);
   
-  if (!app) {
+  // apps.jsonに登録されていないアプリは404
+  if (!legal) {
     notFound();
   }
   
-  const processMarkdown = (text: string) => {
-    return text
-      .replace(/^# (.+)$/gm, '')
-      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-      .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>')
-      .replace(/^- (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.+<\/li>\n?)+/gm, '<ul>$&</ul>')
-      .replace(/\n\n/g, '</p><p>')
-      .trim();
-  };
+  // iTunes APIから取得できた場合はその名前、できなければapps.jsonの名前を使用
+  const appName = app?.trackName ?? legal.appName;
+  const terms = app?.terms ?? legal.terms;
+  const returnId = app?.trackId ?? appId;
   
   return (
     <div className="container">
       <div className="legal-page">
         <nav style={{ marginBottom: "var(--space-6)" }}>
           <Link 
-            href={`/app/${app.trackId}`}
+            href={`/app/${returnId}`}
             style={{ 
               fontSize: "var(--text-sm)", 
               color: "var(--color-accent)" 
             }}
           >
-            ← {app.trackName}に戻る
+            ← {appName}に戻る
           </Link>
         </nav>
         
@@ -70,13 +66,13 @@ export default async function TermsPage({ params }: Props) {
           color: "var(--color-text-secondary)", 
           marginBottom: "var(--space-8)" 
         }}>
-          {app.trackName}
+          {appName}
         </p>
         
         <div 
           className="legal-content"
           dangerouslySetInnerHTML={{ 
-            __html: `<p>${processMarkdown(app.terms)}</p>` 
+            __html: `<p>${processMarkdown(terms)}</p>` 
           }}
         />
       </div>

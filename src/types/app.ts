@@ -74,6 +74,7 @@ export interface iTunesApp {
  */
 export interface AppConfig {
   appId: string;
+  appName: string;
   privacyPolicy: string;
   terms: string;
 }

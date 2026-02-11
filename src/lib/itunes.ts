@@ -73,6 +73,24 @@ export async function getAppInfo(appId: string): Promise<AppInfo | null> {
 }
 
 /**
+ * アプリ設定のみで法的ページ用の最低限の情報を返す
+ * iTunes APIからデータが取得できない（未公開アプリ等）場合のフォールバック
+ * @param appId アプリID
+ */
+export function getAppLegalInfo(appId: string): { appName: string; appId: string; privacyPolicy: string; terms: string } | null {
+  const appConfig = getAppConfig(appId);
+  if (!appConfig) {
+    return null;
+  }
+  return {
+    appName: appConfig.appName,
+    appId: appConfig.appId,
+    privacyPolicy: appConfig.privacyPolicy,
+    terms: appConfig.terms,
+  };
+}
+
+/**
  * 全ての登録済みアプリ情報を取得
  */
 export async function getAllApps(): Promise<AppInfo[]> {
