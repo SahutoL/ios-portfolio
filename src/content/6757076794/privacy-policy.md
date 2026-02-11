@@ -94,7 +94,7 @@ We may update this Privacy Policy from time to time. We will notify you of mater
 ### 11. Contact Us
 
 For privacy inquiries, please contact us at:
-- Email: greef.pandl@gmail.com
+- Email: [greef.pandl@gmail.com](mailto:greef.pandl@gmail.com)
 
 ---
 
@@ -190,4 +190,4 @@ AdsOps（以下「当社」）は、お客様のプライバシー保護に努�
 ### 11. お問い合わせ
 
 プライバシーに関するお問い合わせ：
-- メール: greef.pandl@gmail.com
+- メール: [greef.pandl@gmail.com](mailto:greef.pandl@gmail.com)
