@@ -153,7 +153,7 @@ The Service is distributed through the Apple App Store. You also agree to the [A
 
 For questions about these Terms:
 
-- Email: qursur@gmail.com
+- Email: [EMAIL_ADDRESS](mailto:greef.pandl@gmail.com])
 
 ---
 
@@ -308,4 +308,4 @@ AdsOpsは、Apple Search Ads向けのキャンペーン管理・最適化プラ�
 
 本規約に関するご質問：
 
-- メール: [EMAIL_ADDRESS]
+- メール: [EMAIL_ADDRESS](greef.pandl@gmail.com)

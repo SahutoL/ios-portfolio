@@ -94,7 +94,7 @@ We may update this Privacy Policy from time to time. We will notify you of mater
 ### 11. Contact Us
 
 For privacy inquiries, please contact us at:
-- Email: qursur@gmail.com
+- Email: greef.pandl@gmail.com
 
 ---
 
