@@ -70,13 +70,11 @@ export interface iTunesApp {
 }
 
 /**
- * アプリ設定型
+ * アプリ設定型（メタデータのみ。法的文書はMarkdownファイルで管理）
  */
 export interface AppConfig {
   appId: string;
   appName: string;
-  privacyPolicy: string;
-  terms: string;
 }
 
 /**
@@ -118,6 +116,5 @@ export interface SiteConfig {
  * 表示用に加工されたアプリ情報
  */
 export interface AppInfo extends iTunesApp {
-  privacyPolicy: string;
-  terms: string;
+  // 法的文書はcontentから直接読み込むため、AppInfoには含めない
 }

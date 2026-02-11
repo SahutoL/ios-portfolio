@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { getAllApps, formatRating, getSiteConfig } from "@/lib/itunes";
+import { getAllApps, formatRating, formatPrice, getSiteConfig } from "@/lib/itunes";
 import { StarRating } from "@/components/StarRating";
 
 export const metadata: Metadata = {
@@ -53,7 +53,6 @@ export default async function AppsPage() {
                 <div className="app-card-info">
                   <h2 className="app-name">{app.trackName}</h2>
                   <p className="app-developer">{app.artistName}</p>
-                  <p className="app-category">{app.primaryGenreName}</p>
                 </div>
               </div>
               
@@ -68,6 +67,11 @@ export default async function AppsPage() {
                   )}
                 </div>
               )}
+              
+              <div className="app-card-badges">
+                <span className="badge badge-category">{app.primaryGenreName}</span>
+                <span className="badge badge-price">{formatPrice(app.price, app.formattedPrice)}</span>
+              </div>
             </Link>
           ))}
         </section>

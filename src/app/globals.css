@@ -1196,3 +1196,152 @@ a:hover {
     display: none;
   }
 }
+
+/* ========================================
+   Coming Soon / Placeholder Styles
+======================================== */
+.app-placeholder-icon {
+  width: 128px;
+  height: 128px;
+  border-radius: var(--radius-xl);
+  background: var(--color-background-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.app-coming-soon {
+  text-align: center;
+  padding: var(--space-12) var(--space-6);
+  margin-bottom: var(--space-8);
+  background: var(--color-background-secondary);
+  border-radius: var(--radius-lg);
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-accent);
+  background: rgba(0, 113, 227, 0.1);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-4);
+  letter-spacing: 0.05em;
+}
+
+.coming-soon-text {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+/* ========================================
+   Category & Price Badges (App Cards)
+======================================== */
+.app-card-badges {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--space-2);
+  font-size: 11px;
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.02em;
+}
+
+.badge-category {
+  color: var(--color-accent);
+  background: rgba(0, 113, 227, 0.08);
+}
+
+.badge-price {
+  color: #34c759;
+  background: rgba(52, 199, 89, 0.1);
+}
+
+/* ========================================
+   Dark Mode
+======================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #000000;
+    --color-background-secondary: #1c1c1e;
+    --color-text-primary: #f5f5f7;
+    --color-text-secondary: #98989d;
+    --color-text-tertiary: #6e6e73;
+    --color-accent: #2997ff;
+    --color-accent-hover: #40a9ff;
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-divider: rgba(255, 255, 255, 0.08);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.5);
+    --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Header - dark frosted glass */
+  .site-header {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  /* App cards need visible borders in dark */
+  .app-card {
+    border: 1px solid var(--color-border);
+  }
+
+  /* Stars remain golden */
+  .stars {
+    color: #ffa600;
+  }
+
+  /* Screenshots shadow */
+  .screenshot-item {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Coming soon badge in dark */
+  .coming-soon-badge {
+    background: rgba(41, 151, 255, 0.15);
+  }
+
+  /* Category badge in dark */
+  .badge-category {
+    background: rgba(41, 151, 255, 0.12);
+  }
+
+  .badge-price {
+    background: rgba(52, 199, 89, 0.15);
+  }
+
+  /* Legal page links */
+  .legal-content a {
+    color: var(--color-accent);
+  }
+
+  /* Tokushoho table */
+  .tokushoho-table th {
+    background: var(--color-background-secondary);
+  }
+
+  /* Touch device active states */
+  @media (hover: none) and (pointer: coarse) {
+    .link-button:hover {
+      background: transparent;
+      color: var(--color-accent);
+    }
+
+    .link-button-primary:hover {
+      background: var(--color-accent);
+      color: white;
+    }
+  }
+}

@@ -10,8 +10,11 @@ import {
   formatDate,
   formatLanguages,
   formatPrice,
+  getAppName,
+  isRegisteredApp,
 } from "@/lib/itunes";
 import { StarRating } from "@/components/StarRating";
+import { getContentHtml } from "@/lib/content";
 
 type Props = {
   params: Promise<{ appId: string }>;
@@ -30,28 +33,86 @@ export const revalidate = 604800;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { appId } = await params;
   const app = await getAppInfo(appId);
+  const appName = app?.trackName ?? getAppName(appId);
   
-  if (!app) {
+  if (!appName) {
     return { title: "アプリが見つかりません" };
   }
+
+  const description = app?.description?.slice(0, 160) ?? `${appName}のアプリ情報`;
   
   return {
-    title: app.trackName,
-    description: app.description.slice(0, 160),
+    title: appName,
+    description,
     openGraph: {
-      title: app.trackName,
-      description: app.description.slice(0, 160),
-      images: [app.artworkUrl512],
+      title: appName,
+      description,
+      ...(app?.artworkUrl512 && { images: [app.artworkUrl512] }),
     },
   };
 }
 
 export default async function AppDetailPage({ params }: Props) {
   const { appId } = await params;
+  
+  if (!isRegisteredApp(appId)) {
+    notFound();
+  }
+  
   const app = await getAppInfo(appId);
   
+  // iTunes APIからデータが取得できない場合 → プレースホルダー表示
   if (!app) {
-    notFound();
+    const appName = getAppName(appId) ?? appId;
+    const hasPrivacy = !!(await getContentHtml(appId, 'privacy-policy'));
+    const hasTerms = !!(await getContentHtml(appId, 'terms'));
+    
+    return (
+      <div className="container">
+        <div className="app-detail">
+          <header className="app-detail-header" style={{ justifyContent: "center", textAlign: "center" }}>
+            <div className="app-placeholder-icon">
+              <span style={{ fontSize: "48px" }}>📱</span>
+            </div>
+            <div className="app-detail-info">
+              <h1 className="app-detail-title">{appName}</h1>
+              <p style={{ color: "var(--color-text-secondary)", marginTop: "var(--space-2)" }}>
+                このアプリは現在準備中です
+              </p>
+            </div>
+          </header>
+          
+          <div className="app-coming-soon">
+            <div className="coming-soon-badge">Coming Soon</div>
+            <p className="coming-soon-text">
+              このアプリはApp Storeでの公開準備中です。<br />
+              公開後、詳細情報が自動的に表示されます。
+            </p>
+          </div>
+          
+          {(hasPrivacy || hasTerms) && (
+            <section className="links-section" style={{ justifyContent: "center" }}>
+              {hasPrivacy && (
+                <Link 
+                  href={`/app/${appId}/privacy-policy`}
+                  className="link-button"
+                >
+                  プライバシーポリシー
+                </Link>
+              )}
+              {hasTerms && (
+                <Link 
+                  href={`/app/${appId}/terms`}
+                  className="link-button"
+                >
+                  利用規約
+                </Link>
+              )}
+            </section>
+          )}
+        </div>
+      </div>
+    );
   }
   
   return (

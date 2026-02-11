@@ -52,6 +52,7 @@ export function getAppConfig(appId: string): AppConfig | undefined {
 
 /**
  * アプリ情報と設定を統合して取得
+ * iTunes APIからデータを取得し、AppInfo（= iTunesApp）を返す
  * @param appId アプリID
  */
 export async function getAppInfo(appId: string): Promise<AppInfo | null> {
@@ -65,29 +66,24 @@ export async function getAppInfo(appId: string): Promise<AppInfo | null> {
     return null;
   }
   
-  return {
-    ...iTunesApp,
-    privacyPolicy: appConfig.privacyPolicy,
-    terms: appConfig.terms
-  };
+  return { ...iTunesApp };
 }
 
 /**
- * アプリ設定のみで法的ページ用の最低限の情報を返す
- * iTunes APIからデータが取得できない（未公開アプリ等）場合のフォールバック
+ * apps.jsonに登録されているアプリ名を取得
+ * iTunes API未公開時のフォールバック表示用
  * @param appId アプリID
  */
-export function getAppLegalInfo(appId: string): { appName: string; appId: string; privacyPolicy: string; terms: string } | null {
+export function getAppName(appId: string): string | null {
   const appConfig = getAppConfig(appId);
-  if (!appConfig) {
-    return null;
-  }
-  return {
-    appName: appConfig.appName,
-    appId: appConfig.appId,
-    privacyPolicy: appConfig.privacyPolicy,
-    terms: appConfig.terms,
-  };
+  return appConfig?.appName ?? null;
+}
+
+/**
+ * アプリがapps.jsonに登録されているか確認
+ */
+export function isRegisteredApp(appId: string): boolean {
+  return siteConfig.apps.some(app => app.appId === appId);
 }
 
 /**
@@ -176,10 +172,8 @@ export function formatPrice(price: number, formattedPrice: string): string {
   if (price === 0) {
     return '無料';
   }
-  // formattedPrice が "0" や空の場合も「無料」と表示
   if (!formattedPrice || formattedPrice === '0' || formattedPrice === '¥0') {
     return '無料';
   }
   return formattedPrice;
 }
-
